@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080b16">
+  <title>Still — TV home</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="calendar-status.css">
+  <link rel="stylesheet" href="calendar-selection.css">
+  <link rel="stylesheet" href="widgets.css?v=1.2.0">
+</head>
+<body>
+  <main class="screen">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">✳</span><span>still<span class="brand-period">.</span></span></div>
+      <div class="top-meta"><span class="live-dot"></span><span id="todayLabel">YOUR EVENING, AT A GLANCE</span><button id="settingsButton" class="settings-button" aria-label="Settings" title="Settings">⚙</button></div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> A LITTLE SPACE TO LAND</div>
+        <div class="clock-row"><time id="clock">--:--</time><span id="ampm"></span></div>
+        <div id="dateLine" class="date-line">Loading your day…</div>
+        <p class="hero-note">Take a breath. Pick something good.</p>
+        <section id="spotifyNowPlaying" class="spotify-now-playing" aria-label="Spotify now playing">
+          <img id="spotifyArtwork" class="spotify-artwork" alt="" hidden>
+          <div class="spotify-track-copy"><span class="section-kicker">SPOTIFY · NOW PLAYING</span><strong id="spotifyTrack">Connect Spotify to see what’s playing</strong><span id="spotifyArtist">Your listening stays private to this device.</span></div>
+          <button id="spotifyAction" class="spotify-action" type="button">CONNECT</button>
+        </section>
+      </div>
+      <div class="weather-card" id="weatherCard">
+        <div class="weather-kicker"><span>OUTSIDE</span><span id="weatherLocation">SET YOUR LOCATION</span></div>
+        <div class="weather-main"><span class="weather-icon" id="weatherIcon">☼</span><span id="weatherTemp">—°</span></div>
+        <div id="weatherSummary" class="weather-summary">Your local forecast, here.</div>
+        <div class="weather-foot"><span id="weatherRange">—</span><span class="weather-sun">◦</span></div>
+        <div class="weather-details">
+          <div><span>FEELS LIKE</span><strong id="feelsLike">—</strong></div>
+          <div><span>PRECIPITATION</span><strong id="precipitation">—</strong></div>
+          <div><span>RAIN CHANCE</span><strong id="rainChance">—</strong></div>
+          <div><span>SUNRISE</span><strong id="sunriseTime">—</strong></div>
+          <div><span>SUNSET</span><strong id="sunsetTime">—</strong></div>
+          <div class="wind-stat"><span>WIND</span><div class="wind-value"><span class="compass" aria-label="Wind direction compass"><i id="windNeedle"></i><b>N</b></span><strong id="windSpeed">—</strong><strong id="windDirection">—</strong></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lower-grid">
+      <section class="apps-section" aria-label="Favourite apps">
+        <div class="section-heading"><div><span class="section-kicker">THE GOOD STUFF</span></div><button id="editApps" class="text-button">EDIT APPS <span>↗</span></button></div>
+        <div id="appsGrid" class="apps-grid"></div>
+        <div class="remote-hint"><span class="remote-key">←</span><span class="remote-key">→</span> MOVE <span class="hint-dot">·</span> <span class="remote-key">OK</span> OPEN</div>
+      </section>
+
+      <section class="calendar-section" aria-label="Google Calendar">
+        <div class="section-heading calendar-heading"><div><span class="section-kicker">YOUR WEEK, AT A GLANCE</span><h2 id="weekTitle">This week</h2></div><div class="month-nav"><button id="prevWeek" aria-label="Previous week">‹</button><button id="nextWeek" aria-label="Next week">›</button></div></div>
+        <div class="calendar-card">
+          <div class="weekdays"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+          <div id="calendarDays" class="calendar-days"></div>
+          <div class="agenda"><div class="agenda-label"><span id="agendaTitle">UPCOMING EVENTS</span><span class="agenda-dot"></span></div><div id="agendaList" class="agenda-list"><div class="empty-agenda">Connect Google Calendar to see upcoming events.</div></div><div id="calendarStatus" class="calendar-status" aria-live="polite"></div></div>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer"><span>MADE FOR SLOWER EVENINGS</span><button id="connectCalendar" class="connect-button">CONNECT GOOGLE CALENDAR <span>↗</span></button><span class="footer-right">A HOME THAT FEELS LIKE YOURS <i></i></span></footer>
+  </main>
+
+  <dialog id="settingsDialog" class="settings-dialog">
+    <form method="dialog" id="settingsForm">
+      <div class="dialog-top"><div><span class="section-kicker">MAKE IT YOURS</span><h2>Home settings</h2></div><button class="close-button" value="cancel" aria-label="Close">×</button></div>
+      <label>City or town<input id="locationInput" placeholder="e.g. Bristol, UK"></label>
+      <p class="field-note">Used to find your local forecast. Your location stays in this browser.</p>
+      <label>Favourite apps <span class="field-note">One per line: name | webOS app ID | fallback symbol | colour</span><textarea id="appsInput" rows="5" spellcheck="false"></textarea></label>
+      <p class="field-note">Use the app IDs installed on your TV. IDs can vary by region; check each app's details before adding it.</p>
+      <label>Spotify Web API client ID<input id="spotifyClientIdInput" placeholder="Client ID from Spotify Developer Dashboard"></label>
+      <p class="field-note">For the redirect URI, register <span id="spotifyRedirectUri"></span> in your Spotify app settings. Only playback metadata is requested.</p>
+      <label>Google Calendar OAuth client ID<input id="clientIdInput" placeholder="123…apps.googleusercontent.com"></label>
+      <p class="field-note">Use your Google OAuth Web client. In Google Cloud, add https://YOUR_CALENDAR_API.workers.dev/oauth/callback as an authorised redirect URI. If the app is in testing, add your Google account as a test user.</p>
+      <div class="dialog-actions"><button id="saveSettings" class="primary-button" value="save">SAVE SETTINGS</button><button id="dialogConnect" class="secondary-button" type="button">CONNECT CALENDAR</button></div>
+      <p id="settingsStatus" class="settings-status"></p>
+    </form>
+  </dialog>
+  <dialog id="spotifyQrDialog" class="calendar-qr-dialog" aria-labelledby="spotifyQrTitle">
+    <div class="calendar-qr-content">
+      <div class="calendar-qr-copy">
+        <div class="dialog-top"><div><span class="section-kicker">PHONE SIGN IN</span><h2 id="spotifyQrTitle">Connect Spotify</h2></div><button id="closeSpotifyQr" class="close-button" type="button" aria-label="Close">×</button></div>
+        <p>Scan with your phone, enter this one-time code, and approve access to your currently playing track. The code expires in 10 minutes.</p>
+        <div class="pairing-code"><span>ONE-TIME CODE</span><strong id="spotifyPairCode">--------</strong></div>
+        <div class="pairing-url" id="spotifyPairUrl">https://YOUR_CALENDAR_API.workers.dev/spotify/connect</div>
+        <p id="spotifyQrStatus" class="calendar-qr-status">Preparing secure sign-in…</p>
+      </div>
+      <div class="calendar-qr-image-wrap"><img id="spotifyQrImage" alt="QR code to connect Spotify from your phone"><span>SCAN WITH YOUR PHONE</span></div>
+    </div>
+  </dialog>
+  <dialog id="calendarQrDialog" class="calendar-qr-dialog" aria-labelledby="calendarQrTitle">
+    <div class="calendar-qr-content">
+      <div class="calendar-qr-copy">
+        <div class="dialog-top"><div><span class="section-kicker">PHONE SIGN IN</span><h2 id="calendarQrTitle">Scan to connect</h2></div><button id="closeCalendarQr" class="close-button" type="button" aria-label="Close">×</button></div>
+        <p>Scan this code with your phone camera. Open the page, enter the one-time code below, then approve read-only Calendar access.</p>
+        <div class="pairing-code"><span>ONE-TIME CODE</span><strong id="calendarPairCode">--------</strong></div>
+        <div class="pairing-url" id="calendarPairUrl">https://YOUR_CALENDAR_API.workers.dev/connect</div>
+        <p id="calendarQrStatus" class="calendar-qr-status">Keep this screen open while you sign in. The code expires in 10 minutes.</p>
+      </div>
+      <div class="calendar-qr-image-wrap"><img id="calendarQrImage" src="calendar-connect-qr.svg" alt="QR code to open the calendar sign-in page"><span>SCAN WITH YOUR PHONE</span></div>
+    </div>
+  </dialog>
+  <script src="webOSTVjs-1.2.13/webOSTV.js"></script>
+  <script src="qrcode.js"></script>
+  <script src="app.js?v=1.2.4"></script>
+</body>
+</html>

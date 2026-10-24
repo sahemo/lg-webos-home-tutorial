@@ -1,0 +1,8 @@
+name = "still-tv-calendar-api"
+main = "worker.js"
+compatibility_date = "2026-10-24"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "CALENDAR_SESSIONS"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"

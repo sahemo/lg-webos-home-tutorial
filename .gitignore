@@ -1,0 +1,9 @@
+node_modules/
+.wrangler/
+.dev.vars*
+.env*
+source/dist/
+source/wifi-private.json
+source/still-tv-home-webos/wifi-qr-static.svg
+*.ipk
+.DS_Store

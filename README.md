@@ -6,6 +6,10 @@ The project was developed for an LG TV running webOS 24. Other models and versio
 
 **Last reviewed: 24 October 2026.** Provider dashboards and developer policies change; official documentation is linked throughout.
 
+## Set it up with an AI assistant
+
+Prefer an AI assistant to handle the setup? Copy the [complete AI setup prompt](AI_SETUP_PROMPT.md) into a coding assistant with terminal access. It covers this repository, account configuration, deployment, TV installation, and checks, and identifies the sign-in steps that need your participation.
+
 ## Contents
 
 1. [What this app does](#1-what-this-app-does)
